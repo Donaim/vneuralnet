@@ -15,7 +15,7 @@
 *.a
 
 # EVERYTHING
-**ignore.*/*
+**ignore.*
 
 # IMPORTANT
 !**/ref/*
