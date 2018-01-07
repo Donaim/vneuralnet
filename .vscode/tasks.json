@@ -4,11 +4,29 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "buildDebug",
             "type": "shell",
             "command": "msbuild",
             "args": [
                 "/property:GenerateFullPaths=true",
+                "/p:Configuration=Debug",
+                "/t:build",
+                "/verbosity:minimal"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "focus": true
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "buildRelease",
+            "type": "shell",
+            "command": "msbuild",
+            "args": [
+                "/property:GenerateFullPaths=true",
+                "/p:Configuration=Release",
                 "/t:build",
                 "/verbosity:minimal"
             ],
