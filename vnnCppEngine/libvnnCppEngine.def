@@ -1,0 +1,8 @@
+EXPORTS
+    Create @1
+    FeedResult @2
+    StaticHello @3
+    feedForward @4
+    get_outputNeurons @5
+    get_wHiddenOutput @6
+    get_wInputHidden @7
