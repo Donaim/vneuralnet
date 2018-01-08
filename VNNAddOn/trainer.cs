@@ -355,74 +355,13 @@ namespace VNNAddOn
             backpropagate(NN, outputErrorGradients, hiddenErrorGradients, desiredOutputs, learningRate);
             //backpropagate_old(desiredOutputs, learningRate);
         }
-        void backpropagate_old(double[] desiredOutputs, double learningRate)
-        {
-            //modify deltas between hidden and output layers
-            //--------------------------------------------------------------------------------------------------------
-            for (int k = 0; k < NN.nOutput; k++)
-            {
-                //get error gradient for every output node
-                outputErrorGradients[k] = NN.outputNeurons[k] * (1 - NN.outputNeurons[k]) * (desiredOutputs[k] - NN.outputNeurons[k]);
-                //for all nodes in hidden layer and bias neuron
-                for (int j = 0; j <= NN.nHidden; j++)
-                {
-                    //calculate change in weight
-                    NN.wHiddenOutput[k, j] += learningRate * NN.hiddenNeurons[j] * outputErrorGradients[k];
-                    //vmon.Line("[H] neuron value = " + NN.hiddenNeurons[j] + "; neuron delta = " + deltaHiddenOutput[j, k] + "; error gradient = " + outputErrorGradients[k]);
-                }
-            }
-
-            //modify deltas between input and hidden layers
-            //--------------------------------------------------------------------------------------------------------
-            for (int j = 0; j < NN.nHidden; j++)
-            {
-                //get error gradient for every hidden node
-                double weightedSum = 0;
-                for (int k = 0; k < NN.nOutput; k++) weightedSum += NN.wHiddenOutput[k, j] * outputErrorGradients[k];
-                hiddenErrorGradients[j] = NN.hiddenNeurons[j] * (1 - NN.hiddenNeurons[j]) * weightedSum;
-
-                //for all nodes in input layer and bias neuron
-                for (int i = 0; i <= NN.nInput; i++)
-                {
-                    //calculate change in weight 
-                    NN.wInputHidden[j, i] += learningRate * NN.inputNeurons[i] * hiddenErrorGradients[j];
-                    //vmon.Line("[I] neuron value = " + NN.inputNeurons[i] + "; neuron delta = " + deltaInputHidden[i, j] + "; error gradient = " + hiddenErrorGradients[j]);
-                }
-            }
-        }
         public unsafe static void backpropagate(vnn NN, double[] outputErrorGradients, double[] hiddenErrorGradients, double[] desiredOutputs, double learningRate)
         {
-            //    outputErrorGradients[k] = NN.outputNeurons[k] * (1 - NN.outputNeurons[k]) * (desiredOutputs[k] - NN.outputNeurons[k]);
             getOEG(NN.outputNeurons, desiredOutputs, outputErrorGradients);
-
             mult(NN.wHiddenOutput, NN.hiddenNeurons, outputErrorGradients, learningRate, NN.nHidden, NN.nOutput);
-            //for (int k = 0; k < NN.nOutput; k++)
-            //{
-            //    outputErrorGradients[k] = NN.outputNeurons[k] * (1 - NN.outputNeurons[k]) * (desiredOutputs[k] - NN.outputNeurons[k]);
-            //    for (int j = 0; j <= NN.nHidden; j++)
-            //    {
-            //        //calculate change in weight
-            //        NN.wHiddenOutput[k, j] += learningRate * NN.hiddenNeurons[j] * outputErrorGradients[k];
-            //        //vmon.Line("[H] neuron value = " + NN.hiddenNeurons[j] + "; neuron delta = " + deltaHiddenOutput[j, k] + "; error gradient = " + outputErrorGradients[k]);
-            //    }
-            //}
 
-            //GET HIDDEN ERROR GRADIENTS
-            //    //for (int k = 0; k < NN.nOutput; k++) weightedSum += NN.wHiddenOutput[k, j] * outputErrorGradients[k];
             getHEG(NN.wHiddenOutput, NN.hiddenNeurons, outputErrorGradients, hiddenErrorGradients, NN.NOutput, NN.nHidden);
-
             mult(NN.wInputHidden, NN.inputNeurons, hiddenErrorGradients, learningRate, NN.nInput, NN.NHidden);
-            //for (int j = 0; j < NN.nHidden; j++)
-            //{
-            //    //double weightedSum = 0;
-            //    //for (int k = 0; k < NN.nOutput; k++) weightedSum += NN.wHiddenOutput[k, j] * outputErrorGradients[k];
-            //    //hiddenErrorGradients[j] = NN.hiddenNeurons[j] * (1 - NN.hiddenNeurons[j]) * weightedSum;
-
-            //    for (int i = 0; i <= NN.nInput; i++)
-            //    {
-            //        NN.wInputHidden[j, i] += learningRate * NN.inputNeurons[i] * hiddenErrorGradients[j];
-            //    }
-            //}
         }
         static unsafe void getOEG(double[] output, double[] desired, double[] gradient)
         {

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
-// using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.Diagnostics;
+
+// using Microsoft.VisualStudio.TestTools.UnitTesting;
+using vutils.Testing;
 
 using VNNAddOn;
 using VNNLib;
@@ -21,6 +23,7 @@ namespace StdTest
         }
         
         // [TestMethod]
+        [TestingObject]
         public void simple()
         {
             vnn nn = new vnn(2, 100, 2, (mlp) => addon.RandomizeUniform(mlp));

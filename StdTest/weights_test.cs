@@ -1,5 +1,6 @@
 ﻿using System;
 // using Microsoft.VisualStudio.TestTools.UnitTesting;
+using vutils.Testing;
 
 using System.Linq;
 using System.IO;
@@ -11,6 +12,7 @@ using vutils.Plotting;
 using VNNLib;
 using VNNAddOn;
 
+
 namespace StdTest
 {
     // [TestClass]
@@ -18,14 +20,14 @@ namespace StdTest
     {
         static readonly Random R = new Random();
 
-        // [TestMethod]
+        [TestingObject]
         public void TestStdRandomization()
         {
             testZeroInputs(addon.RandomizeWeights);
             testOnesInputs(addon.RandomizeWeights);
             testRandomInputs(addon.RandomizeWeights);
         }
-        // [TestMethod]
+        [TestingObject]
         public void TestUniformRandomization()
         {
             testZeroInputs((nn) => addon.RandomizeUniform(nn, 5.0, 3.5));

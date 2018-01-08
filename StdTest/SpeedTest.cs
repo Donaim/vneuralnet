@@ -13,6 +13,8 @@ using static System.Console;
 using VNNLib;
 using VNNAddOn;
 
+using vutils.Testing;
+
 namespace StdTest
 {
     // [TestClass]
@@ -21,12 +23,14 @@ namespace StdTest
         public const int INPUT_SIZE = 200, HIDDEN_SIZE = 1000, OUTPUT_SIZE = 100;
 
         // [TestMethod]
+        [TestingObject]
         public void SimpleVNNForwardSpeedTest()
         {
             var nn = new vnn(INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE, addon.RandomizeWeights);
             WriteLine($"Time: {measureForwardSpeed(nn)}");
         }
         // [TestMethod]
+        [TestingObject]
         static void SimpleVNNBackpropNoMomentumSpeedTest()
         {
             var nn = new vnn(INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE, (mlp) => addon.RandomizeUniform(mlp));
@@ -36,6 +40,7 @@ namespace StdTest
 
 
         // [TestMethod]
+        [TestingObject]
         public void VNNCPPForwardSpeedTest()
         {
             //throw new NotImplementedException();

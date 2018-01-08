@@ -8,12 +8,15 @@ using static System.Console;
 using VNNLib;
 using VNNAddOn;
 
+using vutils.Testing;
+
 namespace StdTest
 {
     // [TestClass]
     public class vnnCppTest
     {
         // [TestMethod]
+        [TestingObject]
         public unsafe void CreateTest()
         {
             var nn = new vnnCpp(10, 2000, 10);
