@@ -39,6 +39,7 @@
         },
         {
             "label": "runDebug",
+            "dependsOn" : "buidDebug",
             "type": "shell",
             "command": "mono",
             "args": [

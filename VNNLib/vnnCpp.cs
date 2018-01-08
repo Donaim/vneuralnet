@@ -12,26 +12,26 @@ namespace VNNLib
 {
     public sealed class vnnCpp : IFeedResultNN, IFeedForwardNN
     {
-        [DllImport(@"..\..\..\vnnCppEngine\vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
         unsafe static extern void* Create(int nInputs, int nHidden, int nOutputs);
-        [DllImport(@"..\..\..\vnnCppEngine\vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
         unsafe static extern void Hello(void* p);
 
-        //[DllImport(@"..\..\..\vnnCppEngine\vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
+        //[DllImport(@"vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
         //public unsafe static extern void StaticHello();
 
-        [DllImport(@"..\..\..\vnnCppEngine\vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
         unsafe static extern void feedForward(void* p, double[] pattern);
 
-        [DllImport(@"..\..\..\vnnCppEngine\vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
         unsafe static extern void printWeights(void* p);
 
-        [DllImport(@"..\..\..\vnnCppEngine\vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
         unsafe static extern double* get_wInputHidden(void* p);
-        [DllImport(@"..\..\..\vnnCppEngine\vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
         unsafe static extern double* get_wHiddenOutput(void* p);
 
-        [DllImport(@"..\..\..\vnnCppEngine\vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"vnnCppEngine.dll", CallingConvention = CallingConvention.Cdecl)]
         unsafe static extern double* get_outputNeurons(void* p);
 
         public unsafe void feedForward(double[] pattern) => feedForward(ptr, pattern);
