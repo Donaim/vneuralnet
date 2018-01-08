@@ -4,27 +4,7 @@ using System;
 
 namespace VNNLib
 {
-    public interface IFeedForwardNN
-    {
-        void feedForward(double[] pattern);
-    }
-    public interface IFeedResultNN
-    {
-        double[] feedResult(double[] pattern);
-    }
-    public interface ISimpleMLP
-    {
-        double[,] GwInputHidden { get; }
-        double[,] GwHiddenOutput { get; }
-        double[] GInputNeurons { get; }
-        double[] GHiddenNeurons { get; }
-        double[] GOutputNeurons { get; }
-
-        int NInput { get; }
-        int NHidden { get; }
-        int NOutput { get; }
-    }
-    public class vnn : IFeedResultNN, IFeedForwardNN, ISimpleMLP
+    public class vnn : IFeedResultNN, IFeedForwardNN, ISimpleMLP, ICopyableNN<vnn>
 	{
         public vnn(double[,] wIH, double[,] wHO, Action<ISimpleMLP> randFunc)
 		{

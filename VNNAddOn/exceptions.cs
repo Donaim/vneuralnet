@@ -1,4 +1,6 @@
 ﻿using VNNLib;
+using VNNAddOn;
+
 namespace VNNAddOn.exceptions
 {
 	public class NNSetNotMatch : System.Exception
@@ -14,7 +16,7 @@ namespace VNNAddOn.exceptions
 				mess = "Neural Network outputs lenght and Training Set pattern lenght are not the same!";
 			}
 		}
-		public static void check_ex(vnn nn, trainingSet tset)
+		public static void check_ex(vnn nn, VNNAddOn.trainingSet tset)
 		{
 			if(nn.nInput != tset.inputs[0].Length) { throw new NNSetNotMatch(true); }
 			if(nn.nOutput != tset.outputs[0].Length) { throw new NNSetNotMatch(false); }
