@@ -362,7 +362,7 @@ namespace VNNAddOn
             mult(NN.wInputHidden, NN.inputNeurons, hiddenErrorGradients, learningRate, NN.nInput, NN.NHidden);
         }
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-     	static unsafe void getOEG(double[] output, double[] desired, double[] gradient)
+     	public static unsafe void getOEG(double[] output, double[] desired, double[] gradient)
         {
             double* outpos, OEGpos, despos;
             fixed (double* _outpos = output) { outpos = _outpos; }
@@ -376,7 +376,7 @@ namespace VNNAddOn
             }
         }
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-     	static unsafe void getHEG(double[,] wHiddenOutput, double[] hiddenNeurons, double[] outputErrorGradients, double[] hiddenErrorGradients, int nOutput, int nHidden)
+     	public static unsafe void getHEG(double[,] wHiddenOutput, double[] hiddenNeurons, double[] outputErrorGradients, double[] hiddenErrorGradients, int nOutput, int nHidden)
         {
             double weightedSum;
             double* PREVGRADp, GRADp, Wp, NEURONSp;
@@ -397,17 +397,17 @@ namespace VNNAddOn
             }
         }
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-     	static unsafe void mult(double[,] W, double[] neurons, double[] gradient, double learningRate, int insize, int outsize)
+     	public static unsafe void mult(double[,] W, double[] neurons, double[] gradient, double learningRate, int insize, int outsize)
         {
-            double* npos, Wpos, OEGpos;
+            double* npos, npos0, Wpos, OEGpos;
             fixed (double* _Wpos = &W[0, 0]) { Wpos = _Wpos; }
             fixed (double* _gpos = gradient) { OEGpos = _gpos; }
+			fixed (double* npos_ = &neurons[0]) { npos0 = npos_; }
 
             for (int k = 0; k < outsize; k++)
             {
                 double lr_times_grad = (*OEGpos++) * learningRate;
-
-                fixed (double* npos_ = &neurons[0]) { npos = npos_; }
+				npos = npos0;
 
                 for (int j = 0; j <= insize; j++)
                 {

@@ -55,52 +55,55 @@ namespace VNNAddOn {
 			}
 		}
 
-		public unsafe double getMSE(vnn NN)
+		public unsafe double getMSE(IFeedResultNN nn)
 		{
 			double mse = 0;
 
+			double[] ot = new double[0];
 			//for every training input array
 			for (int tp = 0, l = size; tp < l; tp++)
 			{
 				//feed inputs through network and backpropagate errors
-				NN.feedForward(inputs[tp]);
+				ot = nn.feedResult(inputs[tp]);
 
 				//check all outputs against desired output values
-				for (int k = 0; k < NN.nOutput; k++)
+				for (int k = 0; k < ot.Length; k++)
 				{
 					//sum all the MSEs together
-					mse += Abs(NN.outputNeurons[k] - outputs[tp][k]);
+					mse += Abs(ot[k] - outputs[tp][k]);
 				}
 
 			}//end for
 
 			//calculate error and return as percentage
-			return mse / (NN.nOutput * size);
+			return mse / (ot.Length * size);
 		}
-		public unsafe double getRandomMSE(vnn NN, int sapmleSize)
+		public unsafe double getRandomMSE(IFeedResultNN nn, int sapmleSize)
 		{
 			double mse = 0;
+
+			double[] ot = new double[0];
 
 			//for every training input array
 			for (int tp = 0; tp < sapmleSize; tp++)
 			{
 				int index = rand.Next(size);
 				//feed inputs through network and backpropagate errors
-				NN.feedForward(inputs[index]);
+				ot = nn.feedResult(inputs[index]);
 
 				//check all outputs against desired output values
-				for (int k = 0; k < NN.nOutput; k++)
+				for (int k = 0; k < ot.Length; k++)
 				{
 					//sum all the MSEs together
-					mse += Abs(NN.outputNeurons[k] - outputs[index][k]);
+					mse += Abs(ot[k] - outputs[index][k]);
 				}
 
 			}//end for
 
 			//calculate error and return as percentage
-			return mse / (NN.nOutput * sapmleSize);
+			return mse / (ot.Length * sapmleSize);
 		}
-		public unsafe double getAccuracy(vnn NN, double level)
+		public unsafe double getAccuracy(IFeedResultNN nn, double level)
 		{
 			double incorrectResults = 0;
 
@@ -108,15 +111,15 @@ namespace VNNAddOn {
 			for (int tp = 0; tp < size; tp++)
 			{
 				//feed inputs through network and backpropagate errors
-				NN.feedForward(inputs[tp]);
+				var ot = nn.feedResult(inputs[tp]);
 
 				//correct pattern flag
 
 				//check all outputs against desired output values
-				for (int k = 0; k < NN.nOutput; k++)
+				for (int k = 0; k < ot.Length; k++)
 				{
 					//set flag to false if desired and output differ
-					if (NN.outputNeurons[k] > outputs[tp][k] + level || NN.outputNeurons[k] < outputs[tp][k] - level)
+					if (ot[k] > outputs[tp][k] + level || ot[k] < outputs[tp][k] - level)
 					{
 						incorrectResults++;
 						break;
@@ -128,7 +131,7 @@ namespace VNNAddOn {
 			//calculate error and return as percentage
 			return 1 - incorrectResults / (double)(size);
 		}
-		public unsafe double getRandomAccuracy(vnn NN, double level, int sampleSize)
+		public unsafe double getRandomAccuracy(IFeedResultNN nn, double level, int sampleSize)
 		{
 			int incorrectResults = 0;
 
@@ -137,15 +140,15 @@ namespace VNNAddOn {
 			{
 				int index = rand.Next(size);
 				//feed inputs through network and backpropagate errors
-				NN.feedForward(inputs[index]);
+				var ot = nn.feedResult(inputs[index]);
 
 				//correct pattern flag
 
 				//check all outputs against desired output values
-				for (int k = 0; k < NN.nOutput; k++)
+				for (int k = 0; k < ot.Length; k++)
 				{
 					//set flag to false if desired and output differ
-					if (NN.outputNeurons[k] > outputs[index][k] + level || NN.outputNeurons[k] < outputs[index][k] - level)
+					if (ot[k] > outputs[index][k] + level || ot[k] < outputs[index][k] - level)
 					{
 						incorrectResults++;
 						break;

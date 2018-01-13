@@ -6,10 +6,10 @@ using System.Linq;
 using System;
 
 namespace VNNLib {
-    public class vnnDeep {
-        private readonly double [][,] L;
-        private readonly IReadOnlyList<int> size;
-        private double [][] N;
+    public class vnnDeep : IFeedForwardNN, IFeedResultNN {
+        public readonly double [][,] L;
+        public readonly IReadOnlyList<int> size;
+        public double [][] N;
         public vnnDeep(double [][,] layers){
 	        L = layers;
 
@@ -89,7 +89,16 @@ namespace VNNLib {
             // vnn.mult(wHiddenOutput, hiddenNeurons, outputNeurons, nHidden, nOutput);
       
         }
-        
+        public double[] feedResult(double[] pattern) {
+            feedForward(pattern);
+
+			//create copy of output results
+            int nOutput = size[size.Count - 1];
+			double[] results = new double[nOutput];
+            Array.Copy(N[size.Count - 1], 0, results, 0, nOutput);
+
+			return results;
+        }
         
         public string ToString(bool neurons){
             var b = new System.Text.StringBuilder();            

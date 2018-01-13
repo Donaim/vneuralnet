@@ -54,16 +54,17 @@ namespace VNNLib
         public static unsafe void mult(double[,] A, double[] x, double[] y, int insize, int outsize)
         {
             double ytemp;
-            double* xpos, Apos, ypos;
+            double* xpos, xpos0, Apos, ypos;
             fixed (double* Apos_ = &A[0, 0]) { Apos = Apos_; }
             fixed (double* ypos_ = &y[0]) { ypos = ypos_; }
+			fixed (double* xpos_ = &x[0]) { xpos0 = xpos_; }
 
-            for (int i = 0; i < outsize; i++)
+            for (int i = 0; i < outsize; ++i)
             {
-                fixed (double* xpos_ = &x[0]) { xpos = xpos_; }
+				xpos = xpos0;
                 ytemp = 0;
 
-                for (int j = 0; j <= insize; j++)
+                for (int j = 0; j <= insize; ++j)
                 {
                     ytemp += (*Apos++) * (*xpos++);
                 }
