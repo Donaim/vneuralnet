@@ -1,25 +1,29 @@
 using static System.Math;
+using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 
 using System;
 
 namespace VNNLib {
     public class vnnDeep {
         private readonly double [][,] L;
-        private readonly int[] size;
+        private readonly IReadOnlyList<int> size;
         private double [][] N;
         public vnnDeep(double [][,] layers){
 	        L = layers;
 
-            size = new int[L.Length + 1];
-            size[0] = L[0].GetLength(0);
+            var sizeinit = new int[L.Length + 1];
+            sizeinit[0] = L[0].GetLength(0);
             for(int i = 0; i < L.Length; i++) {
-                size[i + 1] = L[i].GetLength(1);
+                sizeinit[i + 1] = L[i].GetLength(1);
             }
+            size = sizeinit;
 
             zero_neurons();
         }
         void zero_neurons(){
-            N = new double[size.Length][];
+            N = new double[size.Count][];
             for(int i = 0; i < N.Length - 1; i++){
                 N[i] = new double[size[i] + 1];
                 N[i][size[i]] = 1.0; //bias neuron
@@ -32,8 +36,8 @@ namespace VNNLib {
 			using(var stream = new System.IO.MemoryStream()) {
 			using(var writer = new System.IO.BinaryWriter(stream))
 			{
-                writer.Write(size.Length);
-                for(int i = 0; i < size.Length; i++) { writer.Write(size[i]); }
+                writer.Write(size.Count);
+                for(int i = 0; i < size.Count; i++) { writer.Write(size[i]); }
 
                 for(int i = 0; i < this.L.Length; i++){
                     var l = this.L[i];
@@ -52,10 +56,11 @@ namespace VNNLib {
             using(var reader = new System.IO.BinaryReader(stream))
             {
                 int lcount = reader.ReadInt32();
-                size = new int[lcount];
+                var sizeinit = new int[lcount];
                 for(int i = 0; i < lcount; i++) {
-                    size[i] = reader.ReadInt32();
+                    sizeinit[i] = reader.ReadInt32();
                 }
+                size = sizeinit;
 
                 L = new double[lcount - 1][,];
                 for(int i = 0; i < this.L.Length; i++){

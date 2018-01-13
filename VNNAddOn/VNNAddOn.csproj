@@ -45,6 +45,7 @@
     <Compile Include="network_features.cs" />
     <Compile Include="trainer.cs" />
     <Compile Include="trainingSet.cs" />
+    <Compile Include="trainerDeep.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
