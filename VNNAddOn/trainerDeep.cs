@@ -28,13 +28,13 @@ namespace VNNAddOn
             i--;
             wi--;
 
-            // while(i >= 1) {
-            //     trainerNoMomentum.getHEG(nn.L[wi], nn.N[i], ErrorGradients[i + 1], ErrorGradients[i]);
-            //     trainerNoMomentum.mult(nn.L[wi - 1], nn.N[i - 1], ErrorGradients[i], learningRate);
+            while(i >= 1) {
+                trainerNoMomentum.getHEG(nn.L[wi + 1], nn.N[i], ErrorGradients[i + 1], ErrorGradients[i]);
+                trainerNoMomentum.mult(nn.L[wi], nn.N[i - 1], ErrorGradients[i], learningRate);
 
-            //     i--;
-            //     wi--;
-            // }
+                i--;
+                wi--;
+            }
 
 
             // getOEG(NN.outputNeurons, desiredOutputs, outputErrorGradients);
