@@ -42,7 +42,7 @@ class test_deep {
 
     [TestingObject]
     public void test_deep_trainer(){
-        var nn = vnnDeep.CreateRandom(rand, 2, 200, 2);
+        var nn = vnnDeep.CreateRandom(rand, 2, 100, 2);
         var tr = new trainerDeep(nn);
         var tset = data.DataSets.twoParamTest;
 
@@ -64,5 +64,21 @@ class test_deep {
         WriteLine("Elapsed = " + sw.ElapsedMilliseconds + " ms.");
         WriteLine($"Accuracy (+-{ACCRATE}) = {acc.ToString("N2")}");
         WriteLine("Random MSE = " + tset.getRandomMSE(nn, 500));
+    }
+
+    [TestingObject]
+    public void test_deep_backprop(){
+        var tset = data.DataSets.twoParamTest;
+
+        var nnd = vnnDeep.CreateRandom(rand, 2, 100, 2);
+        var trd = new trainerDeep(nnd);
+        var nn = new vnn(2, 100, 2, (mlp) => addon.RandomizeUniform(mlp));
+        var tr = new trainerNoMomentum(nn);
+
+        Console.WriteLine($"nn= wih:{nn.wInputHidden.GetLength(0)}x{nn.wInputHidden.GetLength(1)} who:{nn.wHiddenOutput.GetLength(0)}x{nn.wHiddenOutput.GetLength(1)}");
+        Console.WriteLine($"nn= nin:{nn.inputNeurons.Length} nh:{nn.hiddenNeurons.Length} no:{nn.outputNeurons.Length}");
+
+        Console.WriteLine($"deep= wih:{nnd.L[0].GetLength(0)}x{nnd.L[0].GetLength(1)} who:{nnd.L[1].GetLength(0)}x{nnd.L[1].GetLength(1)}");
+        Console.WriteLine($"deep= nin:{nnd.N[0].Length} nh:{nnd.N[1].Length} no:{nnd.N[2].Length}");
     }
 }

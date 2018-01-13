@@ -22,8 +22,8 @@ namespace VNNAddOn
         public void backpropagate(double[] desiredOutputs, double learningRate){
             int i = nn.N.Length - 1; // starting from last neuron layer
 
-            // trainerNoMomentum.getOEG(nn.N[i], desired:desiredOutputs, gradient: ErrorGradients[i]);
-            // trainerNoMomentum.mult(nn.L[i - 1], nn.N[i - 1], ErrorGradients[i], learningRate: learningRate);
+            trainerNoMomentum.getOEG(nn.N[i], desired:desiredOutputs, gradient: ErrorGradients[i]);
+            trainerNoMomentum.mult(nn.L[i - 1], nn.N[i], ErrorGradients[i], learningRate: learningRate);
             i--;
           
 
