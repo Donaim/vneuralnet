@@ -21,7 +21,8 @@ class test_deep {
 
     [TestingObject]
     public void test_deep_first(){
-        // WriteLine("HELLO");
+        addon.RSeed = 100;                
+
         var deep = vnnDeep.CreateRandom(rand, 2, 3, 3, 4, 5, 3);
         WriteLine(deep.ToString(true)); 
         deep.feedForward(getRandVector(2));
@@ -29,5 +30,14 @@ class test_deep {
 
 
 
+    }
+    [TestingObject]
+    public void test_deep_save(){
+        var deep = vnnDeep.CreateRandom(rand, 2, 3, 3, 4, 5, 3);
+        WriteLine(deep.ToString(false)); 
+        var bytes = deep.ToBytes();
+
+        var recover = new vnnDeep(bytes);
+        WriteLine(recover.ToString(false));
     }
 }

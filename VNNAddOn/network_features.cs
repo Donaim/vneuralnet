@@ -62,7 +62,6 @@ namespace VNNAddOn
 
         public static void RandomizeWeights(ISimpleMLP nn)
 		{
-			Random rand = new Random();
 			//set weights between input and hidden 		
 			//--------------------------------------------------------------------------------------------------------
 			for(int i = 0; i <= nn.NInput; i++)
@@ -93,9 +92,6 @@ namespace VNNAddOn
         /// <param name="mult2">Optimal is 3.5 for all sets of inputs if prev layers was good</param>
         public static void RandomizeUniform(ISimpleMLP nn, double mult1 = 5, double mult2 = 3.5)
         {
-            Random rand = new Random();
-            //set weights between input and hidden 		
-            //--------------------------------------------------------------------------------------------------------
             double limit = Sqrt(3.0 / nn.NInput) * mult1;
             for (int i = 0; i <= nn.NInput; i++)
             {
@@ -105,10 +101,8 @@ namespace VNNAddOn
                     nn.GwInputHidden[j, i] = (rand.NextDouble() * 2 - 1) * limit;
                 }
             }
-
-            //set weights between input and hidden
-            //--------------------------------------------------------------------------------------------------------
-            limit = Sqrt(3.0 / nn.NHidden) * mult2;
+		
+			limit = Sqrt(3.0 / nn.NHidden) * mult2;
             for (int i = 0; i <= nn.NHidden; i++)
             {
                 for (int j = 0; j < nn.NOutput; j++)
@@ -118,11 +112,21 @@ namespace VNNAddOn
                 }
             }
         }
-		static readonly Random srand = new Random();
+		public static int RSeed = -1;
+		static readonly Random rand;
+		static addon(){
+			if(RSeed > 0) 
+			{ 
+				rand = new Random(RSeed); 
+				Console.WriteLine($"VNNAddOn: random is initialized with {RSeed} ");
+			}
+			else { rand = new Random(); }
+		}
+
 		public static double RandomizeUniform(int n_in, int n_out, double mult = 5)
         {
             double limit = Sqrt(3.0 / n_in) * mult;
-			return (srand.NextDouble() * 2 - 1) * limit;
+			return (rand.NextDouble() * 2 - 1) * limit;
 		}
         public static void TestLoop(this vnn nn)
 		{
