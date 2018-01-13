@@ -6,7 +6,7 @@ using System.Linq;
 using System;
 
 namespace VNNLib {
-    public class vnnDeep : IFeedForwardNN, IFeedResultNN {
+    public class vnnDeep : IFeedForwardNN, IFeedResultNN, ICopyableNN<vnnDeep> {
         public readonly double [][,] L;
         public readonly IReadOnlyList<int> size;
         public double [][] N;
@@ -63,8 +63,17 @@ namespace VNNLib {
                 size = sizeinit;
 
                 L = new double[lcount - 1][,];
+                for(int i = 0; i < this.L.Length - 1; i++){
+                    L[i] = new double[size[i + 1] - 1, size[i]];
+                }
+                L[lcount - 2] = new double[size[lcount - 1], size[lcount - 2]];
+
+                // Console.WriteLine("READ");
+                // Console.WriteLine(string.Join(",", this.size));
+                // Console.WriteLine(string.Join(",", this.L.Select(o => o.GetLength(0))));
+                // Console.WriteLine(string.Join(",", this.L.Select(o => o.GetLength(1))));
+                
                 for(int i = 0; i < this.L.Length; i++){
-                    L[i] = new double[size[i], size[i + 1]];
                     var l = this.L[i];
                     for(int x = 0, tox = l.GetLength(0), toy = l.GetLength(1); x < tox; x++){
                         for(int y = 0; y < toy; y++){
@@ -72,6 +81,7 @@ namespace VNNLib {
                         }
                     }
                 }
+
             }}
 
             zero_neurons();
@@ -83,11 +93,6 @@ namespace VNNLib {
             for(int i = 0; i < L.Length; i++) {
                 vnn.mult(L[i], N[i], N[i + 1]);
             }
-
-            // vnn.mult(wInputHidden, inputNeurons, hiddenNeurons, nInput, nHidden);
-            // vnn.mult(wInputHidden, inputNeurons, hiddenNeurons, nInput, nHidden);
-            // vnn.mult(wHiddenOutput, hiddenNeurons, outputNeurons, nHidden, nOutput);
-      
         }
         public double[] feedResult(double[] pattern) {
             feedForward(pattern);
@@ -178,6 +183,32 @@ namespace VNNLib {
                 }
             }    
 
+            return re;
+        }
+
+        
+        public void CopyFrom(vnnDeep target)
+        {
+            for(int i = 0; i < L.Length; i++){
+                Array.Copy(target.L[i], this.L[i], this.L[i].Length);
+            }
+        }
+        public vnnDeep Copy()
+        {
+            var sz = new int[this.size.Count];
+            for(int i = 0; i < sz.Length - 1; i++) { sz[i] = this.size[i] - 1; }
+            sz[sz.Length - 1] = this.size[this.size.Count - 1];
+
+            vnnDeep re = vnnDeep.CreateEmpty(sz);
+            re.CopyFrom(this);
+            return re;
+        }
+        public vnnDeep CopyWithNeurons()
+        {
+            var re = Copy();
+            for(int i = 0; i < L.Length; i++){
+                Array.Copy(this.N[i], re.N[i], this.N[i].Length);
+            }
             return re;
         }
     }

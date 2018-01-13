@@ -1,4 +1,4 @@
-
+using System.Linq;
 using vutils.Testing;
 using vutils.Plotting;
 
@@ -34,6 +34,10 @@ class test_deep {
     public void test_deep_save(){
         var deep = vnnDeep.CreateRandom(rand, 2, 3, 3, 4, 5, 3);
         WriteLine(deep.ToString(false)); 
+        // WriteLine(string.Join(",", deep.size));
+        // WriteLine(string.Join(",", deep.L.Select(o => o.GetLength(0))));
+        // WriteLine(string.Join(",", deep.L.Select(o => o.GetLength(1))));
+
         var bytes = deep.ToBytes();
 
         var recover = new vnnDeep(bytes);
@@ -42,7 +46,7 @@ class test_deep {
 
     [TestingObject]
     public void test_deep_trainer(){
-        var nn = vnnDeep.CreateRandom(rand, 2, 50, 20, 10, 2);
+        var nn = vnnDeep.CreateRandom(rand, 2, 30, 20, 20, 20, 2);
         var tr = new trainerDeep(nn);
         var tset = data.DataSets.twoParamTest;
 
