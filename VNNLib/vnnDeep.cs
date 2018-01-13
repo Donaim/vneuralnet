@@ -134,14 +134,19 @@ namespace VNNLib {
             else { return $"Hidden[{i}]"; }
         }
 
+        public vnn ToSimpleVNN(){
+            if(size.Count != 3) { throw new Exception($"Cannot convert to simple vnn because size({size.Count}) is wrong"); }
+            return new vnn(L[0], L[1]);
+        }
+
         public static vnnDeep CreateEmpty(params int[] sizes) {
             var count = sizes.Length;
-            var l = new double[count][,];
+            var w = new double[count - 1][,];
             for(int i = 0; i < count - 1; i++) { // last is different
-                l[i] = new double[sizes[i + 1], sizes[i] + 1]; // transposed & one bias 
+                w[i] = new double[sizes[i + 1], sizes[i] + 1]; // transposed & one bias 
             }
-            l[count - 1] = new double[sizes[count - 1], sizes[count - 2]];
-            return new vnnDeep(l);
+            // w[count - 2] = new double[sizes[count - 1], sizes[count - 2]];
+            return new vnnDeep(w);
         }
         public static vnnDeep CreateRandom(RandomizeFunc randomizer, params int[] sizes) {
             var re = CreateEmpty(sizes);

@@ -67,7 +67,7 @@ class test_deep {
     }
 
     [TestingObject]
-    public void test_deep_backprop(){
+    public void test_deep_sizes(){
         var tset = data.DataSets.twoParamTest;
 
         var nnd = vnnDeep.CreateRandom(rand, 2, 100, 2);
@@ -79,5 +79,19 @@ class test_deep {
         Console.WriteLine($"nd= wih:{nnd.L[0].GetLength(0)}x{nnd.L[0].GetLength(1)} who:{nnd.L[1].GetLength(0)}x{nnd.L[1].GetLength(1)}");
         Console.WriteLine($"nn= nin:{nn.inputNeurons.Length} nh:{nn.hiddenNeurons.Length} no:{nn.outputNeurons.Length}");
         Console.WriteLine($"nd= nin:{nnd.N[0].Length} nh:{nnd.N[1].Length} no:{nnd.N[2].Length}");
+        Console.WriteLine($"nd= size:{nnd.size.Count}");
+    }
+
+    [TestingObject]
+    public void test_deep_backprop(){
+        // var tset = data.DataSets.twoParamTest;
+
+        var nnd = vnnDeep.CreateRandom(rand, 2, 100, 2);
+        // var trd = new trainerDeep(nnd);
+        var nn = nnd.ToSimpleVNN();
+        // var tr = new trainerNoMomentum(nn);
+
+        StdTest.old_test.simple_portable(nn);
+
     }
 }

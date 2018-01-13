@@ -182,5 +182,36 @@ namespace VNNLib
 
             return copy;
         }
+
+		static void printNeurons(System.Text.StringBuilder b, double[] neurons, string name) {
+			b.AppendLine($"N-{name}: ");
+			for(int y = 0, toy = neurons.Length; y < toy; y++){
+				b.Append(neurons[y].ToString("N2").PadLeft(6));
+			}
+			b.AppendLine();
+		}
+		static void printWeights(System.Text.StringBuilder b, double[,] w, string ins, string outs) {
+			b.AppendLine($"{ins} x {outs}: ");
+			for(int x = 0, tox = w.GetLength(0), toy = w.GetLength(1); x < tox; x++){
+				for(int y = 0; y < toy; y++){
+					b.Append(w[x, y].ToString("N2").PadLeft(6));
+				}
+			}
+			b.AppendLine();
+		}
+		public string ToString(bool neurons) {
+			var b = new System.Text.StringBuilder();            
+            if(neurons){
+				printNeurons(b, inputNeurons, "Inputs");
+				printNeurons(b, hiddenNeurons, "Hidden");
+				printNeurons(b, outputNeurons, "Output");
+            }
+            else {
+				printWeights(b, wInputHidden, "Input", "Hidden");
+				printWeights(b, wHiddenOutput, "Hidden", "Output");
+			}   
+            return b.ToString();
+		}
+		public override string ToString() { return ToString(false); }
     }
 }
