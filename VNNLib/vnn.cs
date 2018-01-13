@@ -48,10 +48,10 @@ namespace VNNLib
             //set input neurons to input values
             Array.Copy(pattern, 0, inputNeurons, 0, nInput);
             
-            mult(wInputHidden, inputNeurons, hiddenNeurons, nInput, nHidden);
-            mult(wHiddenOutput, hiddenNeurons, outputNeurons, nHidden, nOutput);
+            mult(wInputHidden, inputNeurons, hiddenNeurons);
+            mult(wHiddenOutput, hiddenNeurons, outputNeurons);
         }
-        public static unsafe void mult(double[,] A, double[] x, double[] y, int insize, int outsize)
+        public static unsafe void mult(double[,] A, double[] x, double[] y)
         {
             double ytemp;
             double* xpos, xpos0, Apos, ypos;
@@ -59,12 +59,15 @@ namespace VNNLib
             fixed (double* ypos_ = &y[0]) { ypos = ypos_; }
 			fixed (double* xpos_ = &x[0]) { xpos0 = xpos_; }
 
+			int insize = x.Length;
+			int outsize = y.Length;
+
             for (int i = 0; i < outsize; ++i)
             {
 				xpos = xpos0;
                 ytemp = 0;
 
-                for (int j = 0; j <= insize; ++j)
+                for (int j = 0; j < insize; ++j)
                 {
                     ytemp += (*Apos++) * (*xpos++);
                 }

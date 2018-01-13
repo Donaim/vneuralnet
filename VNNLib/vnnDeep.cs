@@ -81,7 +81,7 @@ namespace VNNLib {
             Array.Copy(pattern, N[0], pattern.Length);
 
             for(int i = 0; i < L.Length; i++) {
-                vnn.mult(L[i], N[i], N[i + 1], size[i], size[i + 1]);
+                vnn.mult(L[i], N[i], N[i + 1]);
             }
 
             // vnn.mult(wInputHidden, inputNeurons, hiddenNeurons, nInput, nHidden);

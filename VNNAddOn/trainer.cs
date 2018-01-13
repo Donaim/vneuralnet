@@ -356,10 +356,10 @@ namespace VNNAddOn
      	public unsafe static void backpropagate(vnn NN, double[] outputErrorGradients, double[] hiddenErrorGradients, double[] desiredOutputs, double learningRate)
         {
             getOEG(NN.outputNeurons, desiredOutputs, outputErrorGradients);
-            mult(NN.wHiddenOutput, NN.hiddenNeurons, outputErrorGradients, learningRate, NN.nHidden, NN.nOutput);
+            mult(NN.wHiddenOutput, NN.hiddenNeurons, outputErrorGradients, learningRate);
 
             getHEG(NN.wHiddenOutput, NN.hiddenNeurons, outputErrorGradients, hiddenErrorGradients, NN.NOutput, NN.nHidden);
-            mult(NN.wInputHidden, NN.inputNeurons, hiddenErrorGradients, learningRate, NN.nInput, NN.NHidden);
+            mult(NN.wInputHidden, NN.inputNeurons, hiddenErrorGradients, learningRate);
         }
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
      	public static unsafe void getOEG(double[] output, double[] desired, double[] gradient)
@@ -397,19 +397,22 @@ namespace VNNAddOn
             }
         }
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-     	public static unsafe void mult(double[,] W, double[] neurons, double[] gradient, double learningRate, int insize, int outsize)
+     	public static unsafe void mult(double[,] W, double[] neurons, double[] gradient, double learningRate)
         {
             double* npos, npos0, Wpos, OEGpos;
             fixed (double* _Wpos = &W[0, 0]) { Wpos = _Wpos; }
             fixed (double* _gpos = gradient) { OEGpos = _gpos; }
 			fixed (double* npos_ = &neurons[0]) { npos0 = npos_; }
 
+			int insize = neurons.Length;
+			int outsize = gradient.Length;
+
             for (int k = 0; k < outsize; k++)
             {
                 double lr_times_grad = (*OEGpos++) * learningRate;
 				npos = npos0;
 
-                for (int j = 0; j <= insize; j++)
+                for (int j = 0; j < insize; j++)
                 {
                     (*Wpos++) += (*npos++) * lr_times_grad;
                     //NN.wHiddenOutput[k, j] += learningRate * NN.hiddenNeurons[j] * outputErrorGradients[k];
