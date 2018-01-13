@@ -196,6 +196,7 @@ namespace VNNLib
 				for(int y = 0; y < toy; y++){
 					b.Append(w[x, y].ToString("N2").PadLeft(6));
 				}
+				b.AppendLine();
 			}
 			b.AppendLine();
 		}

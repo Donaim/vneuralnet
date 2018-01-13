@@ -83,23 +83,26 @@ class test_deep {
     public void test_deep_conversion(){
         var nnd = vnnDeep.CreateRandom(rand, 2, 100, 2);
         var nn = nnd.ToSimpleVNN();
+        addon.RandomizeUniform(nn);
 
         StdTest.old_test.simple_portable(nn);
     }
 
     [TestingObject]
     public void test_deep_outputs(){
-        var nnd = vnnDeep.CreateRandom(rand, 2, 100, 2);
+        var nnd = vnnDeep.CreateRandom(rand, 2, 3, 3);
         var nn = nnd.ToSimpleVNN();
         var tset = data.DataSets.twoParamTest;
 
-        WriteLine(nnd.ToString(true));
-        WriteLine(nn.ToString(true));
+        const bool neurons = false;
+
+        WriteLine(nnd.ToString(neurons));
+        WriteLine(nn.ToString(neurons));
         
         nnd.feedResult(tset.inputs[0]);
         nn.feedResult(tset.inputs[0]);
 
-        WriteLine(nnd.ToString(true));
-        WriteLine(nn.ToString(true));
+        WriteLine(nnd.ToString(neurons));
+        WriteLine(nn.ToString(neurons));
     }
 }

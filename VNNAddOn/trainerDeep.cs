@@ -24,7 +24,7 @@ namespace VNNAddOn
             int wi = nn.L.Length - 1;
 
             trainerNoMomentum.getOEG(nn.N[i], desired:desiredOutputs, gradient: ErrorGradients[i]);
-            // trainerNoMomentum.mult(nn.L[wi], nn.N[i - 1], ErrorGradients[i], learningRate: learningRate);
+            trainerNoMomentum.mult(nn.L[wi], nn.N[i - 1], ErrorGradients[i], learningRate);
             i--;
             wi--;
 

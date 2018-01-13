@@ -137,7 +137,25 @@ namespace VNNLib {
 
         public vnn ToSimpleVNN(){
             if(size.Count != 3) { throw new Exception($"Cannot convert to simple vnn because size({size.Count}) is wrong"); }
-            return new vnn(L[0], L[1]);
+
+            var re = new vnn(size[0] - 1, size[1] - 1, size[2]);
+
+            for(int i = 0; i <= re.nInput; i++)
+            {
+                for(int j = 0; j < re.nHidden; j++)
+                {
+                    re.wInputHidden[j, i] = L[0][j, i];
+                }
+            }
+            for(int i = 0; i <= re.nHidden; i++)
+            {
+                for(int j = 0; j < re.nOutput; j++)
+                {
+                    re.wHiddenOutput[j, i] = L[1][j, i];
+                }
+            }
+
+            return re;
         }
 
         public static vnnDeep CreateEmpty(params int[] sizes) {

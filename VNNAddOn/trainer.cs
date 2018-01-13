@@ -379,18 +379,18 @@ namespace VNNAddOn
      	public static unsafe void getHEG(double[,] wHiddenOutput, double[] hiddenNeurons, double[] outputErrorGradients, double[] hiddenErrorGradients, int nOutput, int nHidden)
         {
             double weightedSum;
-            double* PREVGRADp, GRADp, Wp, NEURONSp;
+            double* PREVGRADp, PREVGRADp0, GRADp, Wp, NEURONSp;
             fixed (double* _Wp = &wHiddenOutput[0, 0]) { Wp = _Wp; }
             fixed (double* _Neuronsp = &hiddenNeurons[0]) { NEURONSp = _Neuronsp; }
             fixed (double* _GRADp = hiddenErrorGradients) { GRADp = _GRADp; }
+			fixed (double* _PREVGRADp = outputErrorGradients) { PREVGRADp0 = _PREVGRADp; }
 
             for (int j = 0; j < nHidden; j++, NEURONSp++)
             {
-                fixed (double* _PREVGRADp = outputErrorGradients) { PREVGRADp = _PREVGRADp; }
+				PREVGRADp = PREVGRADp0;
                 weightedSum = 0;
                 for (int k = 0; k < nOutput; k++)
                 {
-                    //weightedSum += wHiddenOutput[k, j] * (*OEGpos++);
                     weightedSum += (Wp[k * nOutput + j]) * (*PREVGRADp++);
                 }
                 (*GRADp++) = (*NEURONSp) * (1 - (*NEURONSp)) * weightedSum;
