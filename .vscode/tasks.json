@@ -38,8 +38,24 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "brunDebug",
+            "dependsOn" : "buildDebug",
+            "type": "shell",
+            "command": "mono",
+            "args": [
+                "StdTest/bin/Debug/StdTest.exe"
+            ],
+            "group": "build",
+            "presentation": {
+                // Reveal the output only if unrecognized errors occur.
+                "reveal": "always",
+                "focus": true
+            },
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "runDebug",
-            "dependsOn" : "buidDebug",
             "type": "shell",
             "command": "mono",
             "args": [

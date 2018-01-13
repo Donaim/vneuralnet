@@ -30,4 +30,6 @@ namespace VNNLib {
     {
         void backpropagate(double[] desiredOutputs, double learningRate);
     }
+
+    public delegate double RandomizeFunc(int n_in, int n_out, int i);
 }

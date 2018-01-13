@@ -15,10 +15,7 @@ namespace StdTest
             //new SpeedTest().OptimizedVNNForwardSpeedTest();
             //new WeightsTest().TestUniformRandomization();
 
-            while (true)
-            {
-                vutils.Testing.TestingModule.ChooseMethods();
-            }
+            vutils.Testing.TestingModule.ChooseMethodsLoop(false);
             //Console.ReadLine();
         }
     }

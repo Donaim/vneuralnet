@@ -118,7 +118,12 @@ namespace VNNAddOn
                 }
             }
         }
-
+		static readonly Random srand = new Random();
+		public static double RandomizeUniform(int n_in, int n_out, double mult = 5)
+        {
+            double limit = Sqrt(3.0 / n_in) * mult;
+			return (srand.NextDouble() * 2 - 1) * limit;
+		}
         public static void TestLoop(this vnn nn)
 		{
 			try

@@ -57,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="vnnCppTest.cs" />
     <Compile Include="weights_test.cs" />
+    <Compile Include="test_deep.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
