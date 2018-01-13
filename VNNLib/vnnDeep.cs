@@ -26,8 +26,9 @@ namespace VNNLib {
             N = new double[size.Count][];
             for(int i = 0; i < N.Length; i++){
                 N[i] = new double[size[i]];
-                // N[i][size[i] - 1] = 1.0; //bias neuron
+                N[i][size[i] - 1] = 1.0; //bias neuron
             }
+            N[size.Count - 1][size[size.Count -1] - 1] = 0;
         }
        
         public unsafe byte[] ToBytes()
