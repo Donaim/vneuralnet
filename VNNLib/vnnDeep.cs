@@ -28,7 +28,7 @@ namespace VNNLib {
                 N[i] = new double[size[i]];
                 N[i][size[i] - 1] = 1.0; //bias neuron
             }
-            N[size.Count - 1][size[size.Count -1] - 1] = 0;
+            N[size.Count - 1][size[size.Count -1] - 1] = 0; // output neurons doesnt have bias
         }
        
         public unsafe byte[] ToBytes()

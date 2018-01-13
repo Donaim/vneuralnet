@@ -21,17 +21,19 @@ namespace VNNAddOn
 
         public void backpropagate(double[] desiredOutputs, double learningRate){
             int i = nn.N.Length - 1; // starting from last neuron layer
+            int wi = nn.L.Length - 1;
 
             trainerNoMomentum.getOEG(nn.N[i], desired:desiredOutputs, gradient: ErrorGradients[i]);
-            trainerNoMomentum.mult(nn.L[i - 1], nn.N[i - 1], ErrorGradients[i], learningRate: learningRate);
+            // trainerNoMomentum.mult(nn.L[wi], nn.N[i - 1], ErrorGradients[i], learningRate: learningRate);
             i--;
-          
+            wi--;
 
             // while(i >= 1) {
-            //     trainerNoMomentum.getHEG(nn.L[i], nn.N[i], ErrorGradients[i + 1], ErrorGradients[i], nn.size[i + 1], nn.size[i]);
-            //     trainerNoMomentum.mult(nn.L[i - 1], nn.N[i - 1], ErrorGradients[i], learningRate: learningRate, insize: nn.size[i - 1], outsize: nn.size[i]);
+            //     trainerNoMomentum.getHEG(nn.L[wi], nn.N[i], ErrorGradients[i + 1], ErrorGradients[i]);
+            //     trainerNoMomentum.mult(nn.L[wi - 1], nn.N[i - 1], ErrorGradients[i], learningRate);
 
             //     i--;
+            //     wi--;
             // }
 
 
