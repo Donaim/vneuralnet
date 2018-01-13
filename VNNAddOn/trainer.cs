@@ -358,7 +358,7 @@ namespace VNNAddOn
             getOEG(NN.outputNeurons, desiredOutputs, outputErrorGradients);
             mult(NN.wHiddenOutput, NN.hiddenNeurons, outputErrorGradients, learningRate);
 
-            getHEG(NN.wHiddenOutput, NN.hiddenNeurons, outputErrorGradients, hiddenErrorGradients, NN.NOutput, NN.nHidden);
+            getHEG(NN.wHiddenOutput, NN.hiddenNeurons, outputErrorGradients, hiddenErrorGradients);
             mult(NN.wInputHidden, NN.inputNeurons, hiddenErrorGradients, learningRate);
         }
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -376,8 +376,11 @@ namespace VNNAddOn
             }
         }
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-     	public static unsafe void getHEG(double[,] wHiddenOutput, double[] hiddenNeurons, double[] outputErrorGradients, double[] hiddenErrorGradients, int nOutput, int nHidden)
+     	public static unsafe void getHEG(double[,] wHiddenOutput, double[] hiddenNeurons, double[] outputErrorGradients, double[] hiddenErrorGradients)
         {
+			int nHidden = hiddenNeurons.Length - 1,
+				nOutput = outputErrorGradients.Length;
+
             double weightedSum;
             double* PREVGRADp, PREVGRADp0, GRADp, Wp, NEURONSp;
             fixed (double* _Wp = &wHiddenOutput[0, 0]) { Wp = _Wp; }
