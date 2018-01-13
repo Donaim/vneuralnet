@@ -14,9 +14,9 @@ namespace VNNLib {
 	        L = layers;
 
             var sizeinit = new int[L.Length + 1];
-            sizeinit[0] = L[0].GetLength(0);
+            sizeinit[0] = L[0].GetLength(1);
             for(int i = 0; i < L.Length; i++) {
-                sizeinit[i + 1] = L[i].GetLength(1);
+                sizeinit[i + 1] = L[i].GetLength(0);
             }
             size = sizeinit;
 
@@ -24,11 +24,10 @@ namespace VNNLib {
         }
         void zero_neurons(){
             N = new double[size.Count][];
-            for(int i = 0; i < N.Length - 1; i++){
-                N[i] = new double[size[i] + 1];
-                N[i][size[i]] = 1.0; //bias neuron
+            for(int i = 0; i < N.Length; i++){
+                N[i] = new double[size[i]];
+                N[i][size[i] - 1] = 1.0; //bias neuron
             }
-            N[N.Length - 1] = new double[size[N.Length - 1]]; //last neuron layer does not have bias
         }
        
         public unsafe byte[] ToBytes()
@@ -136,11 +135,12 @@ namespace VNNLib {
         }
 
         public static vnnDeep CreateEmpty(params int[] sizes) {
-            var l = new double[sizes.Length - 1][,];
-            for(int i = 0; i < sizes.Length - 1; i++) {
-                l[i] = new double[sizes[i], sizes[i + 1]];
+            var count = sizes.Length;
+            var l = new double[count][,];
+            for(int i = 0; i < count - 1; i++) { // last is different
+                l[i] = new double[sizes[i + 1], sizes[i] + 1]; // transposed & one bias 
             }
-
+            l[count - 1] = new double[sizes[count - 1], sizes[count - 2]];
             return new vnnDeep(l);
         }
         public static vnnDeep CreateRandom(RandomizeFunc randomizer, params int[] sizes) {

@@ -76,9 +76,8 @@ class test_deep {
         var tr = new trainerNoMomentum(nn);
 
         Console.WriteLine($"nn= wih:{nn.wInputHidden.GetLength(0)}x{nn.wInputHidden.GetLength(1)} who:{nn.wHiddenOutput.GetLength(0)}x{nn.wHiddenOutput.GetLength(1)}");
+        Console.WriteLine($"nd= wih:{nnd.L[0].GetLength(0)}x{nnd.L[0].GetLength(1)} who:{nnd.L[1].GetLength(0)}x{nnd.L[1].GetLength(1)}");
         Console.WriteLine($"nn= nin:{nn.inputNeurons.Length} nh:{nn.hiddenNeurons.Length} no:{nn.outputNeurons.Length}");
-
-        Console.WriteLine($"deep= wih:{nnd.L[0].GetLength(0)}x{nnd.L[0].GetLength(1)} who:{nnd.L[1].GetLength(0)}x{nnd.L[1].GetLength(1)}");
-        Console.WriteLine($"deep= nin:{nnd.N[0].Length} nh:{nnd.N[1].Length} no:{nnd.N[2].Length}");
+        Console.WriteLine($"nd= nin:{nnd.N[0].Length} nh:{nnd.N[1].Length} no:{nnd.N[2].Length}");
     }
 }
