@@ -14,10 +14,10 @@ namespace VNNLib {
 	        L = layers;
 
             var sizeinit = new int[L.Length + 1];
-            sizeinit[0] = L[0].GetLength(1);
             for(int i = 0; i < L.Length; i++) {
-                sizeinit[i + 1] = L[i].GetLength(0);
+                sizeinit[i] = L[i].GetLength(1);
             }
+            sizeinit[L.Length] = L[L.Length - 1].GetLength(0);
             size = sizeinit;
 
             zero_neurons();
@@ -26,7 +26,7 @@ namespace VNNLib {
             N = new double[size.Count][];
             for(int i = 0; i < N.Length; i++){
                 N[i] = new double[size[i]];
-                N[i][size[i] - 1] = 1.0; //bias neuron
+                // N[i][size[i] - 1] = 1.0; //bias neuron
             }
         }
        
@@ -145,7 +145,6 @@ namespace VNNLib {
             for(int i = 0; i < count - 1; i++) { // last is different
                 w[i] = new double[sizes[i + 1], sizes[i] + 1]; // transposed & one bias 
             }
-            // w[count - 2] = new double[sizes[count - 1], sizes[count - 2]];
             return new vnnDeep(w);
         }
         public static vnnDeep CreateRandom(RandomizeFunc randomizer, params int[] sizes) {

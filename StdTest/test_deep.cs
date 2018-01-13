@@ -68,30 +68,38 @@ class test_deep {
 
     [TestingObject]
     public void test_deep_sizes(){
-        var tset = data.DataSets.twoParamTest;
-
         var nnd = vnnDeep.CreateRandom(rand, 2, 100, 2);
-        var trd = new trainerDeep(nnd);
         var nn = new vnn(2, 100, 2, (mlp) => addon.RandomizeUniform(mlp));
-        var tr = new trainerNoMomentum(nn);
 
         Console.WriteLine($"nn= wih:{nn.wInputHidden.GetLength(0)}x{nn.wInputHidden.GetLength(1)} who:{nn.wHiddenOutput.GetLength(0)}x{nn.wHiddenOutput.GetLength(1)}");
         Console.WriteLine($"nd= wih:{nnd.L[0].GetLength(0)}x{nnd.L[0].GetLength(1)} who:{nnd.L[1].GetLength(0)}x{nnd.L[1].GetLength(1)}");
         Console.WriteLine($"nn= nin:{nn.inputNeurons.Length} nh:{nn.hiddenNeurons.Length} no:{nn.outputNeurons.Length}");
         Console.WriteLine($"nd= nin:{nnd.N[0].Length} nh:{nnd.N[1].Length} no:{nnd.N[2].Length}");
+        Console.WriteLine($"nd= sin:{nnd.size[0]} sh:{nnd.size[1]} so:{nnd.size[2]}");
         Console.WriteLine($"nd= size:{nnd.size.Count}");
     }
 
     [TestingObject]
-    public void test_deep_backprop(){
-        // var tset = data.DataSets.twoParamTest;
-
+    public void test_deep_conversion(){
         var nnd = vnnDeep.CreateRandom(rand, 2, 100, 2);
-        // var trd = new trainerDeep(nnd);
         var nn = nnd.ToSimpleVNN();
-        // var tr = new trainerNoMomentum(nn);
 
         StdTest.old_test.simple_portable(nn);
+    }
 
+    [TestingObject]
+    public void test_deep_outputs(){
+        var nnd = vnnDeep.CreateRandom(rand, 2, 100, 2);
+        var nn = nnd.ToSimpleVNN();
+        var tset = data.DataSets.twoParamTest;
+
+        WriteLine(nnd.ToString(true));
+        WriteLine(nn.ToString(true));
+        
+        nnd.feedResult(tset.inputs[0]);
+        nn.feedResult(tset.inputs[0]);
+
+        WriteLine(nnd.ToString(true));
+        WriteLine(nn.ToString(true));
     }
 }
